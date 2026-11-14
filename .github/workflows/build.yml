@@ -10,7 +10,13 @@ jobs:
         with:
           distribution: temurin
           java-version: '17'
-      - name: Build
+      - name: Install deps
+        run: sudo apt-get update && sudo apt-get install -y zstd gpgv file xz-utils unzip python3
+      - name: Build runtime
+        env:
+          DSH_BETA_TOKEN_FILE: ""
+        run: bash runtime/build-runtime.sh arm64-v8a
+      - name: Build APK
         env:
           DSH_BETA_TOKEN_FILE: ""
         run: bash tooling/build-apk.sh -f arm64
